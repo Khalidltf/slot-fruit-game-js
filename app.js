@@ -1,7 +1,7 @@
 /*
-1- put your money on bet
-2- number of lines to bet on
-3- collect the bet amount
+// 1- put your money on bet
+// 2- number of lines to bet on
+// 3- collect the bet amount
 4- spin the fruit machine
 5- check if the user wins
 6- give the user their winnings
@@ -21,5 +21,28 @@ const deposit = () => {
   }
 };
 
-const amount = deposit();
-console.log(typeof amount);
+const getNumOfLines = () => {
+  while (true) {
+    let numOfLines = prompt("Enter the number of lines u bet ON 1-3: ");
+    let lines = parseFloat(numOfLines);
+
+    if (isNaN(lines) || lines <= 0 || lines > 3)
+      console.log("Invalid number of Lines retry!");
+    else return lines;
+  }
+};
+
+const getTheBetAmount = (balance, lines) => {
+  while (true) {
+    let theBetAmount = prompt("Enter the bet amount per line: ");
+    const bet = parseFloat(theBetAmount);
+
+    if (isNaN(bet) || bet <= 0 || bet > balance / lines)
+      console.log("Invalid bet amount, retry to enter the correct bet amount");
+    else return bet;
+  }
+};
+
+let balance = deposit();
+const numberOfLines = getNumOfLines();
+const bet = getTheBetAmount(balance, numberOfLines);
