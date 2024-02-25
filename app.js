@@ -2,11 +2,28 @@
 // 1- put your money on bet
 // 2- number of lines to bet on
 // 3- collect the bet amount
-4- spin the fruit machine
+// 4- spin the fruit machine
 5- check if the user wins
 6- give the user their winnings
 7- play again
 */
+
+const ROWS = 3;
+const COLS = 3;
+
+const SYMBOLS_COUNT = {
+  A: 4,
+  B: 9,
+  C: 2,
+  D: 6,
+};
+
+const SYMBOLS_VALUES = {
+  A: 5,
+  B: 7,
+  C: 4,
+  D: 8,
+};
 
 const prompt = require("prompt-sync")();
 
@@ -43,6 +60,32 @@ const getTheBetAmount = (balance, lines) => {
   }
 };
 
-let balance = deposit();
-const numberOfLines = getNumOfLines();
-const bet = getTheBetAmount(balance, numberOfLines);
+const spin = () => {
+  const symbols = [];
+  for (const [symbol, count] of Object.entries(SYMBOLS_COUNT)) {
+    //  console.log(`${symbol} : ${value}`);
+    for (let i = 0; i < count; i++) {
+      symbols.push(symbol);
+    }
+  }
+
+  const reels = [[], [], []];
+  for (let i = 0; i < COLS; i++) {
+    let reelSymbols = [...symbols];
+    for (let j = 0; j < ROWS; j++) {
+      let randomIndex = Math.floor(Math.random() * reelSymbols.length);
+      let selectedSymbol = reelSymbols[randomIndex];
+      reels[i].push(selectedSymbol);
+      reelSymbols.splice(randomIndex, 1);
+    }
+  }
+
+  return reels;
+};
+
+const result = spin();
+console.log(result);
+
+// let balance = deposit();
+// const numberOfLines = getNumOfLines();
+// const bet = getTheBetAmount(balance, numberOfLines);
