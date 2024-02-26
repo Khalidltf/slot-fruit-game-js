@@ -84,8 +84,35 @@ const spin = () => {
   return reels;
 };
 
-let balance = deposit();
-const numberOfLines = getNumOfLines();
-const bet = getTheBetAmount(balance, numberOfLines);
-const result = spin();
+const transpose = (reels) => {
+  const rows = [];
+  for (let i = 0; i < ROWS; i++) {
+    rows.push([]);
+    // 0 - rows = [[]]
+    for (let j = 0; j < COLS; j++) {
+      // 0 - rows = [0:[]]
 
+      rows[i].push(reels[j][i]);
+    }
+  }
+  return rows;
+};
+
+const printFruitMachine = (arr) => {
+  for (const row of arr) {
+    let sym = "";
+    for (const [i, symbol] of row.entries()) {
+      sym += symbol;
+      if (i != row.length - 1) {
+        sym += " | ";
+      }
+    }
+    console.log(sym);
+  }
+};
+// let balance = deposit();
+// const numberOfLines = getNumOfLines();
+// const bet = getTheBetAmount(balance, numberOfLines);
+const result = spin();
+const reels = transpose(result);
+printFruitMachine(reels);
