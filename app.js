@@ -3,9 +3,9 @@
 // 2- number of lines to bet on
 // 3- collect the bet amount
 // 4- spin the fruit machine
-5- check if the user wins
-6- give the user their winnings
-7- play again
+// 5- check if the user wins
+// 6- give the user their winnings
+// 7- play again
 */
 
 const ROWS = 3;
@@ -110,9 +110,52 @@ const printFruitMachine = (arr) => {
     console.log(sym);
   }
 };
-// let balance = deposit();
-// const numberOfLines = getNumOfLines();
-// const bet = getTheBetAmount(balance, numberOfLines);
-const result = spin();
-const reels = transpose(result);
-printFruitMachine(reels);
+
+const getWinnings = (rows, lines, bet, balance) => {
+  let winnings = 0;
+  for (let row = 0; row < lines; row++) {
+    const symbols = rows[row];
+    let match = true;
+
+    for (symbol of symbols) {
+      if (symbol !== symbols[0]) {
+        match = false;
+        break;
+      }
+    }
+    // Check
+    if (match) {
+      winnings += bet * SYMBOLS_VALUES[symbols[0]];
+    }
+  }
+  return winnings;
+};
+
+function playAgain() {
+  let balance = deposit();
+
+  while (true) {
+    console.log(`current Balance $${balance}`);
+    const result = spin();
+    const numberOfLines = getNumOfLines();
+    const bet = getTheBetAmount(balance, numberOfLines);
+    const reels = transpose(result);
+    const loss = bet * numberOfLines;
+    balance -= loss;
+    printFruitMachine(reels);
+    const win = getWinnings(reels, numberOfLines, bet, balance);
+    balance += win;
+
+    console.log("---------------");
+    console.log(`winning: $${win}`);
+    if (balance <= 0) {
+      console.log("u run out of money");
+      break;
+    }
+
+    const input = prompt("Continue ? y(yes) : n(no) ");
+    if (input === "n") break;
+  }
+}
+
+setTimeout(playAgain, 1000);
